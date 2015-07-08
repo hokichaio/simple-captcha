@@ -29,7 +29,7 @@ module SimpleCaptcha #:nodoc
     end
 
     def self.generate_key(*args)
-      args << Time.now.to_s
+      args << Time.now.to_f.to_s
       Digest::SHA1.hexdigest(args.join)
     end
   end
