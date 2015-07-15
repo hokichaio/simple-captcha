@@ -14,9 +14,14 @@ module SimpleCaptcha
     end
     
     def call(env) # :nodoc:
-      if env["REQUEST_METHOD"] == "GET" && captcha_path?(env['PATH_INFO'])
-        make_image(env)
-      else
+      begin
+        if env["REQUEST_METHOD"] == "GET" && captcha_path?(env['PATH_INFO'])
+          make_image(env)
+        else
+          @app.call(env)
+        end
+      rescue => e
+        env["simple_captcha_error"] = e
         @app.call(env)
       end
     end
